@@ -19,7 +19,10 @@ jobs:
         with:
           distribution: temurin
           java-version: '21'
-      - run: mvn clean verify jacoco:report --file backend/pom.xml
+      - name: Resolve Maven plugins
+        run: mvn dependency:resolve-plugins --file backend/pom.xml
+      - name: Build & Run tests with coverage
+        run: mvn clean verify jacoco:report --file backend/pom.xml
       - uses: actions/upload-artifact@v4
         with:
           name: backend-coverage
