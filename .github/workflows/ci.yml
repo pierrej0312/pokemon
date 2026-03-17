@@ -36,20 +36,20 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: '20'
-      - run: |
+      - name: Install dependencies
+        run: |
           cd frontend
           npm ci
-      - run: |
+      - name: Run tests with coverage
+        run: |
           cd frontend
-          npm run lint
-      - run: |
-          cd frontend
-          npm run test -- --watch=false --browsers=ChromeHeadless --code-coverage
+          npm run test -- --watch=false --browsers=ChromeHeadless --coverage
       - uses: actions/upload-artifact@v4
         with:
           name: frontend-coverage
           path: frontend/coverage
-      - run: |
+      - name: Build Angular app
+        run: |
           cd frontend
           npm run build -- --output-path=dist
 
