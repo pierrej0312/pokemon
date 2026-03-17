@@ -1,11 +1,10 @@
-name: CI/CD Pokémon Game
+name: CI/CD Pokémon Game Local
 
 on:
   push:
     branches:
       - develop
       - 'feature/**'
-      - 'release/**'
   pull_request:
     branches:
       - develop
@@ -13,92 +12,52 @@ on:
 
 jobs:
   build-backend:
-    name: Build & Test Backend
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Set up JDK 21
-        uses: actions/setup-java@v3
+      - uses: actions/checkout@v3
+      - uses: actions/setup-java@v3
         with:
           distribution: temurin
           java-version: '21'
-
-      - name: Build Maven backend with coverage
-        run: mvn clean verify jacoco:report --file backend/pom.xml
-
-      - name: Archive backend coverage
-        uses: actions/upload-artifact@v3
+      - run: mvn clean verify jacoco:report --file backend/pom.xml
+      - uses: actions/upload-artifact@v4
         with:
           name: backend-coverage
           path: backend/target/site/jacoco/jacoco.xml
 
   build-frontend:
-    name: Build & Test Frontend
     runs-on: ubuntu-latest
     needs: build-backend
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Setup Node.js 20
-        uses: actions/setup-node@v3
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
         with:
           node-version: '20'
-
-      - name: Install frontend dependencies
-        run: |
+      - run: |
           cd frontend
           npm ci
-
-      - name: Run frontend lint
-        run: |
+      - run: |
           cd frontend
           npm run lint
-
-      - name: Run frontend unit tests with coverage
-        run: |
+      - run: |
           cd frontend
           npm run test -- --watch=false --browsers=ChromeHeadless --code-coverage
-
-      - name: Archive frontend coverage
-        uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: frontend-coverage
           path: frontend/coverage
-
-      - name: Build frontend for production
-        run: |
+      - run: |
           cd frontend
           npm run build -- --output-path=dist
 
-  docker-build-deploy:
-    name: Docker Build & Deploy Staging
+  docker-build-local:
     runs-on: ubuntu-latest
     needs: [build-backend, build-frontend]
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Build backend Docker image
-        run: docker build -t pokemon-backend ./backend
-
-      - name: Build frontend Docker image
-        run: docker build -t pokemon-frontend ./frontend
-
-      - name: Docker login (optional)
-        run: |
-          echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
-
-      - name: Push Docker images to registry (optional)
-        run: |
-          docker tag pokemon-backend ${{ secrets.DOCKER_USERNAME }}/pokemon-backend:latest
-          docker tag pokemon-frontend ${{ secrets.DOCKER_USERNAME }}/pokemon-frontend:latest
-          docker push ${{ secrets.DOCKER_USERNAME }}/pokemon-backend:latest
-          docker push ${{ secrets.DOCKER_USERNAME }}/pokemon-frontend:latest
-
-      - name: Deploy to staging server
-        run: |
-          ssh -o StrictHostKeyChecking=no ${{ secrets.STAGING_USER }}@${{ secrets.STAGING_HOST }} \
-          "cd /path/to/pokemon && docker-compose pull && docker-compose up -d"
+      - uses: actions/checkout@v3
+      - run: docker build -t pokemon-backend ./backend
+      - run: docker build -t pokemon-frontend ./frontend
+      # Déploiement distant commenté pour l'instant
+      #- run: |
+      #    ssh -o StrictHostKeyChecking=no ${{ secrets.STAGING_USER }}@${{ secrets.STAGING_HOST }} \
+      #    "cd /path/to/pokemon && docker-compose pull && docker-compose up -d"
