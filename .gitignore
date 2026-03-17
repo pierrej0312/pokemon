@@ -48,7 +48,6 @@ frontend/.angular/
 frontend/.idea/
 frontend/*.iml
 frontend/npm-debug.log
-frontend/package-lock.json
 
 
 ### VS Code ###
