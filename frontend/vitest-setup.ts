@@ -1,5 +1,6 @@
-import { TestBed } from '@angular/core/types/testing';
-import { BrowserTestingModule} from '@angular/platform-browser/types/testing';
-import { platformBrowser } from '@angular/platform-browser';
+import { TestBed } from '@angular/core/testing';
+import { BrowserTestingModule } from '@angular/platform-browser/testing';
+import { platformBrowserDynamicTesting } from '@angular/platform-browser-dynamic/testing';
 
-TestBed.initTestEnvironment(BrowserTestingModule, platformBrowser() );
+// Initialise l'environnement Angular standalone pour tests
+TestBed.initTestEnvironment(BrowserTestingModule, platformBrowserDynamicTesting());
