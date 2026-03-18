@@ -1,0 +1,9 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/pokemon
+    username: postgres
+    password: Failure70
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
