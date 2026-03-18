@@ -1,4 +1,3 @@
-target/
 !backend/.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
@@ -13,6 +12,7 @@ target/
 *.iws
 *.iml
 *.ipr
+out/
 
 ### Eclipse ###
 .apt_generated
@@ -33,12 +33,6 @@ build/
 !**/src/main/**/build/
 !**/src/test/**/build/
 
-### VS Code ###
-.vscode/
-
-### Mac OS ###
-.DS_Store
-
 
 ### BACKEND (Java / Maven) ###
 backend/target/
@@ -49,12 +43,34 @@ backend/.mvn/wrapper/maven-wrapper.jar
 ### Frontend (Node / Angular) ###
 frontend/node_modules/
 frontend/dist/
+frontend/out-tsc/
 frontend/.angular/
 frontend/.idea/
 frontend/*.iml
+frontend/npm-debug.log
 
-### OS / IntelliJ ###
-*.DS_Store
+
+### VS Code ###
+.vscode/
+
+### IntelliJ ###
 *.log
 .idea/
-*.iml
+
+### Mac OS ###
+.DS_Store
+Thumbs.db
+
+# Maven
+target/
+*.class
+*.jar
+*.war
+*.ear
+
+# Maven Wrapper
+.mvn/wrapper/maven-wrapper.jar  # on peut garder mvnw + mvnw.cmd
+
+# Docker
+staging/postgres_data/
+staging/**/*.log
