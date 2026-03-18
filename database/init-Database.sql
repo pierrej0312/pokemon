@@ -1,0 +1,3 @@
+CREATE DATABASE pokemon;
+CREATE USER postgres WITH PASSWORD 'Failure70';
+GRANT ALL PRIVILEGES ON DATABASE pokemon TO postgres;
