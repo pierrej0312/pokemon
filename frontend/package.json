@@ -6,7 +6,7 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "vitest run --setup-files vitest-setup.ts",
+    "test": "vitest run --coverage --watch=false --browsers=chrome",
     "lint": "ng lint"
   },
   "private": true,
